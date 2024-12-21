@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import tasksRouter from './api/tasks';
 import './db';
+import usersRouter from './api/users';
 
 const errHandler = (err, req, res, next) => {
   /* if the error in development then send stack trace to display whole error,
@@ -25,3 +26,4 @@ app.listen(port, () => {
   console.info(`Server running at ${port}`);
 });
 app.use(errHandler);
+app.use('/api/users', usersRouter);
