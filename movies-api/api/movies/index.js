@@ -1,7 +1,8 @@
 import movieModel from './movieModel';
 import asyncHandler from 'express-async-handler';
 import express from 'express';
-import {getUpcomingMovies} from '../tmdb-api';
+import { getUpcomingMovies } from '../tmdb-api';
+import fetch from 'node-fetch'; // 用于调用 TMDB API
 
 const router = express.Router();
 
@@ -25,7 +26,6 @@ router.get('/', asyncHandler(async (req, res) => {
     };
     res.status(200).json(returnObject);
 }));
-// Get movie details
 router.get('/:id', asyncHandler(async (req, res) => {
     const id = parseInt(req.params.id);
     const movie = await movieModel.findByMovieDBId(id);
@@ -38,5 +38,15 @@ router.get('/:id', asyncHandler(async (req, res) => {
 router.get('/tmdb/upcoming', asyncHandler(async (req, res) => {
     const upcomingMovies = await getUpcomingMovies();
     res.status(200).json(upcomingMovies);
+}));
+router.get('/tmdb/genres', asyncHandler(async (req, res) => {
+    const apiKey = process.env.TMDB_KEY;
+    const url = `https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}&language=en-US`;
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(response.statusText);
+    }
+    const genres = await response.json();
+    res.status(200).json(genres);
 }));
 export default router;
