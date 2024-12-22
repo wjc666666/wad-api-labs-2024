@@ -3,7 +3,9 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import usersRouter from './api/users';
 import './db';
-import defaultErrHandler from './errHandler'
+import defaultErrHandler from './errHandler';
+import moviesRouter from './api/movies';   //import movies router
+
 
 dotenv.config();
 
@@ -18,3 +20,4 @@ app.use(defaultErrHandler);
 app.listen(port, () => {
   console.info(`Server running at ${port}`);
 });
+app.use('/api/movies', moviesRouter); //ADD THIS BEFORE THE DEFAULT ERROR HANDLER.
