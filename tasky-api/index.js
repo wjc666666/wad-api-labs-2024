@@ -3,6 +3,7 @@ import express from 'express';
 import tasksRouter from './api/tasks';
 import './db';
 import usersRouter from './api/users';
+import cors from 'cors';
 
 const errHandler = (err, req, res, next) => {
   /* if the error in development then send stack trace to display whole error,
@@ -27,3 +28,4 @@ app.listen(port, () => {
 });
 app.use(errHandler);
 app.use('/api/users', usersRouter);
+app.use(cors());
